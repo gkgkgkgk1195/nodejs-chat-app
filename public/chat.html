@@ -9,7 +9,9 @@
         <div class="chat">
             <div id="sidebar" class="chat__sidebar"></div>
             <div class="chat__main">
-                <div id="messages" class="chat__messages"></div>
+                <div id="messages" class="chat__messages">
+                  <div id="myMessages" class="my_chat__messages"></div>
+                </div>
                 <p id="typing"></p>
                 <div class="compose">
                   <form id="message-form" action="">
@@ -31,6 +33,16 @@
                 <p>{{message}}</p>
             </div>
         </script>
+
+        <script id="message-template-sent" type="text/html">
+          <div class="message right">
+              <p>
+                  <span class="message__name">{{username}}</span>
+                  <span class="message__meta">{{createdAt}}</span>
+              </p>
+              <p>{{message}}</p>
+          </div>
+      </script>
 
         <script id="location-message-template" type="text/html">
             <div class="message">

@@ -117,11 +117,19 @@ text-align: center;
   padding: 24px 24px 0 24px;
   overflow-y: scroll;
 }
+.my_chat__messages {
+  flex-grow: 1;
+  padding: 24px 24px 0 24px;
+  text-align: right;
+}
 
 /* Message Styles */
 
 .message {
   margin-bottom: 16px;
+}
+.message.right {
+  text-align: right;
 }
 
 .message__name {

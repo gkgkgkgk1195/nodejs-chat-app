@@ -9,11 +9,13 @@ const $messageFormButton = $messageForm.querySelector("button");
 // const $sendLocationBtn = document.querySelector("#send-location");
 const $clearChat = document.querySelector("#clear-chat");
 const $messages = document.querySelector("#messages");
+const $myMessages = document.querySelector("#myMessages");
 const $isTyping = document.querySelector("#typing").innerHTML;
 
 // Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationMessageTemplate = document.querySelector("#location-message-template").innerHTML;
+const sentMessageTemplate = document.querySelector("#message-template-sent").innerHTML;
 const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 
 // Options
@@ -49,7 +51,17 @@ socket.on("message", message => {
     createdAt: moment(message.createdAt).format("h:mm a")
   });
 
-  $messages.insertAdjacentHTML("beforeend", html);
+  if(message.username === username){
+    const html = Mustache.render(sentMessageTemplate, {
+      username: message.username,
+      message: message.text,
+      createdAt: moment(message.createdAt).format("h:mm a")
+    });
+
+    $messages.insertAdjacentHTML("beforeend", html);
+  } else{
+    $messages.insertAdjacentHTML("beforeend", html);
+  }
   autoscroll();
 });
 
@@ -130,8 +142,6 @@ $clearChat.addEventListener("click", () => {
       }, 1000)
     }else{
       clearTimeout(timeout)
-      //sendMessage() function will be called once the user hits enter
-      sendMessage()
     }
   }));
 
