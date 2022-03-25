@@ -4,7 +4,8 @@ const socket = io();
 const $messageForm = document.querySelector("#message-form");
 const $messageFormInput = $messageForm.querySelector("input");
 const $messageFormButton = $messageForm.querySelector("button");
-const $sendLocationBtn = document.querySelector("#send-location");
+// const $sendLocationBtn = document.querySelector("#send-location");
+const $clearChat = document.querySelector("#clear-chat");
 const $messages = document.querySelector("#messages");
 
 // Templates
@@ -50,7 +51,6 @@ socket.on("message", message => {
 });
 
 socket.on("locationMessage", message => {
-  console.log(message);
   const html = Mustache.render(locationMessageTemplate, {
     username: message.username,
     url: message.url,
@@ -61,6 +61,7 @@ socket.on("locationMessage", message => {
 });
 
 socket.on("roomData", ({ room, users }) => {
+  console.log("🚀 ~ file: chat.js ~ line 64 ~ socket.on ~ users", users)
   const html = Mustache.render(sidebarTemplate, {
     room,
     users
@@ -89,28 +90,32 @@ $messageForm.addEventListener("submit", e => {
   });
 });
 
-$sendLocationBtn.addEventListener("click", () => {
-  if (!navigator.geolocation) {
-    return alert("Geolocation is not supported by your browser.");
-  } else {
-    $sendLocationBtn.setAttribute("disabled", "disabled");
+// $sendLocationBtn.addEventListener("click", () => {
+//   if (!navigator.geolocation) {
+//     return alert("Geolocation is not supported by your browser.");
+//   } else {
+//     $sendLocationBtn.setAttribute("disabled", "disabled");
 
-    navigator.geolocation.getCurrentPosition(position => {
-      socket.emit(
-        "sendLocation",
-        {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        },
-        error => {
-          $sendLocationBtn.removeAttribute("disabled");
-          if (!error) {
-            console.log("Location shared!");
-          }
-        }
-      );
-    });
-  }
+//     navigator.geolocation.getCurrentPosition(position => {
+//       socket.emit(
+//         "sendLocation",
+//         {
+//           latitude: position.coords.latitude,
+//           longitude: position.coords.longitude
+//         },
+//         error => {
+//           $sendLocationBtn.removeAttribute("disabled");
+//           if (!error) {
+//             console.log("Location shared!");
+//           }
+//         }
+//       );
+//     });
+//   }
+// });
+
+$clearChat.addEventListener("click", () => {
+ $messages.innerHTML = ''
 });
 
 socket.emit("join", { username, room }, error => {
