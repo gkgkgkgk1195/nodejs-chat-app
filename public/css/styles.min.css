@@ -210,3 +210,9 @@ text-align: center;
   right: 0;
   transform: translateY(-50%);
 }
+#typing {
+  padding: 0 30px;
+    margin-bottom: -30px;
+    font-size: 12px;
+    color: #747474;
+}

@@ -38,6 +38,13 @@ io.on("connection", socket => {
     }
   });
 
+  socket.on('typing', (data)=>{
+    if(data.typing==true)
+       io.emit('display', data)
+    else
+       io.emit('display', data)
+  })
+
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
     const filter = new Filter();

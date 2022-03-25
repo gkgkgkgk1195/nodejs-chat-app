@@ -1,5 +1,7 @@
 const socket = io();
-
+var typing=false;
+var timeout=undefined;
+let typingTimeout=()=>{};
 // Elements
 const $messageForm = document.querySelector("#message-form");
 const $messageFormInput = $messageForm.querySelector("input");
@@ -7,6 +9,7 @@ const $messageFormButton = $messageForm.querySelector("button");
 // const $sendLocationBtn = document.querySelector("#send-location");
 const $clearChat = document.querySelector("#clear-chat");
 const $messages = document.querySelector("#messages");
+const $isTyping = document.querySelector("#typing").innerHTML;
 
 // Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
@@ -61,7 +64,6 @@ socket.on("locationMessage", message => {
 });
 
 socket.on("roomData", ({ room, users }) => {
-  console.log("🚀 ~ file: chat.js ~ line 64 ~ socket.on ~ users", users)
   const html = Mustache.render(sidebarTemplate, {
     room,
     users
@@ -117,6 +119,35 @@ $messageForm.addEventListener("submit", e => {
 $clearChat.addEventListener("click", () => {
  $messages.innerHTML = ''
 });
+
+  $messageFormInput.addEventListener("keypress", ((e)=>{
+    if(e.which!=13){
+      typing=true
+      socket.emit('typing', {user:username, typing:true})
+      clearTimeout(timeout)
+      timeout=setTimeout(()=>{
+        document.querySelector("#typing").innerHTML = '';
+      }, 1000)
+    }else{
+      clearTimeout(timeout)
+      //sendMessage() function will be called once the user hits enter
+      sendMessage()
+    }
+  }));
+
+  socket.on('display', (data)=>{
+    if(data.typing==true){
+      if(username !== data.user){
+        document.querySelector("#typing").innerHTML = `${data.user} is typing...`;
+        clearTimeout(timeout)
+      timeout=setTimeout(()=>{
+        document.querySelector("#typing").innerHTML = '';
+      }, 1000)
+      }
+    }
+    else
+      document.querySelector("#typing").innerHTML = '';
+  })
 
 socket.emit("join", { username, room }, error => {
   if (error) {
