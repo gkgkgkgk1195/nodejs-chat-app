@@ -1,9 +1,13 @@
 <!doctype html>
 <html>
     <head>
-        <title>Let's Talk</title>
+      <title>Let's Talk</title>
+      <meta name='viewport' content='width=device-width, initial-scale=1'>
         <link rel="icon" href="/img/favicon.png">
         <link rel="stylesheet" href="/css/styles.min.css">
+        <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.2/flatly/bootstrap.min.css">
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     </head>
     <body>
         <div class="chat">
@@ -12,12 +16,15 @@
                 <div id="messages" class="chat__messages">
                   <div id="myMessages" class="my_chat__messages"></div>
                 </div>
+                <div id="emojiDialog" class="emoji_dialog"><emoji-picker></emoji-picker></div>
                 <p id="typing"></p>
                 <div class="compose">
+
                   <form id="message-form" action="">
-                    <input name="message" type="text" placeholder="Message" required autocomplete="off">
-                    <button>Send</button>
-                    </form>
+                    <input id="messageInput" name="message" type="text" placeholder="Message" required autocomplete="off">
+                    <button id="sendMessage">Send</button>
+                  </form>
+                  <button id="openEmoji" class="btn btn-danger"><i class="fas fa-flushed"></i></button>
                     <!-- <button id="send-location">Send location</button> -->
                     <button id="clear-chat">Clear Chat</button>
                 </div>
@@ -71,5 +78,39 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.8.0/qs.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/chat.js"></script>
+        <script>
+          let emojiDialog = document.getElementById("emojiDialog");
+          let openEmoji = document.getElementById("openEmoji");
+          window.onclick = function(event) {
+            //refactor this code to hide emoji dialog on backdrop click
+            if (event.target == emojiDialog) {
+              emojiDialog.style.display = "none";
+            }
+          }
+
+          emojiDialog.style.display = "none"
+
+          openEmoji.addEventListener('click', e =>{
+            if (emojiDialog.style.display === "none") {
+              emojiDialog.style.display = "block"
+            } else {
+              emojiDialog.style.display = "none"
+            }
+          })
+
+          let inputMessage = document.getElementById("messageInput");
+
+          let emojiPicker = document.querySelector('emoji-picker');
+
+          emojiPicker.addEventListener('emoji-click', event => {
+            inputMessage.value += event.detail.unicode
+          });
+        </script>
+        <script>
+        if ('Notification' in window) {
+          if (window.Notification.permission === 'granted') {
+            new window.Notification(`Welcome ${username}`);
+          }
+        }</script>
     </body>
 </html>

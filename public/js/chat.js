@@ -4,8 +4,8 @@ var timeout=undefined;
 let typingTimeout=()=>{};
 // Elements
 const $messageForm = document.querySelector("#message-form");
-const $messageFormInput = $messageForm.querySelector("input");
-const $messageFormButton = $messageForm.querySelector("button");
+const $messageFormInput = document.getElementById("messageInput");
+const $messageFormButton = document.getElementById("sendMessage");
 // const $sendLocationBtn = document.querySelector("#send-location");
 const $clearChat = document.querySelector("#clear-chat");
 const $messages = document.querySelector("#messages");
@@ -61,6 +61,13 @@ socket.on("message", message => {
     $messages.insertAdjacentHTML("beforeend", html);
   } else{
     $messages.insertAdjacentHTML("beforeend", html);
+    fetch('/broadcast', {
+      body: JSON.stringify({title: `Payment received Successfully`, body: `${message.username}: ${message.text}`}),
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
   }
   autoscroll();
 });
