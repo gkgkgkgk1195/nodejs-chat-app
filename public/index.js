@@ -1,17 +1,18 @@
 // Check if service workers are supported
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js', {
-    scope: '/',
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js", {
+    scope: "/",
   });
 }
 
-const publicVapidKey = 'BH6ZN8fGDmPTea0x9O6eMdtwS4PY69R62WO5ZfK1x7PfHrQ8oLLxEGjJ11Z8aOf8SJktIx-nHavRj5OSAlT-ALI';
+const publicVapidKey =
+  "BH6ZN8fGDmPTea0x9O6eMdtwS4PY69R62WO5ZfK1x7PfHrQ8oLLxEGjJ11Z8aOf8SJktIx-nHavRj5OSAlT-ALI";
 
 const urlBase64ToUint8Array = (base64String) => {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
-    .replace(/_/g, '/');
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -21,20 +22,36 @@ const urlBase64ToUint8Array = (base64String) => {
   }
   return outputArray;
 };
-
-const getSubscribedElement = () => document.getElementById('subscribed');
-const getUnsubscribedElement = () => document.getElementById('unsubscribed');
+const toggleNotification = document.getElementById("toggleNotification");
+toggleNotification.addEventListener("change", () => {
+  if (toggleNotification.checked) {
+    subscribe();
+  } else {
+    unsubscribe();
+  }
+});
+const getSubscribedElement = () => document.getElementById("subscribed");
+const getUnsubscribedElement = () => document.getElementById("unsubscribed");
 
 const setSubscribeMessage = async () => {
   const registration = await navigator.serviceWorker.ready;
   const subscription = await registration.pushManager.getSubscription();
   // subscription
-  getSubscribedElement().setAttribute('style', `display: ${subscription ? 'block' : 'none'};`);
-  getUnsubscribedElement().setAttribute('style', `display: ${subscription ? 'none' : 'block'};`);
+  subscription
+    ? (toggleNotification.checked = true)
+    : (toggleNotification.checked = false);
+  getSubscribedElement().setAttribute(
+    "style",
+    `display: ${subscription ? "block" : "none"};`
+  );
+  getUnsubscribedElement().setAttribute(
+    "style",
+    `display: ${subscription ? "none" : "block"};`
+  );
 };
 
 window.subscribe = async () => {
-  if (!('serviceWorker' in navigator)) return;
+  if (!("serviceWorker" in navigator)) return;
 
   const registration = await navigator.serviceWorker.ready;
 
@@ -44,11 +61,11 @@ window.subscribe = async () => {
     applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
   });
 
-  const response = await fetch('/subscription', {
-    method: 'POST',
+  const response = await fetch("/subscription", {
+    method: "POST",
     body: JSON.stringify(subscription),
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
     },
   });
 
@@ -64,9 +81,9 @@ window.unsubscribe = async () => {
 
   const { endpoint } = subscription;
   const response = await fetch(`/subscription?endpoint=${endpoint}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
     },
   });
 
@@ -76,11 +93,11 @@ window.unsubscribe = async () => {
   }
 };
 
-  window.broadcast = async () => {
-  await fetch('/broadcast', {
-    method: 'GET',
+window.broadcast = async () => {
+  await fetch("/broadcast", {
+    method: "GET",
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
     },
   });
 };

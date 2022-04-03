@@ -2,7 +2,6 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const socketio = require("socket.io");
 const Filter = require("bad-words");
 const { generateMessage, generateLocationMessage } = require("./utils/messages");
@@ -70,7 +69,7 @@ io.on("connection", socket => {
       return callback("Profanity is not allowed!");
     } else {
       if(user !== undefined){
-        io.to(user.room).emit("message", generateMessage(user.username, message));
+        io.to(user.room).emit("message", generateMessage(user.username, message, user.room));
         callback();
       }
     }
@@ -93,18 +92,6 @@ io.on("connection", socket => {
       });
     }
   });
-});
-
-app.post('/subscribe', (req, res) => {
-  const subscription = req.body.subscription
-  res.status(201).json({});
-  // create payload
-  const payload = JSON.stringify({
-    title: req.body.noti.title,
-    body: req.body.noti.body,
-  });
-  webPush.sendNotification(subscription, payload)
-    .catch(error => console.error(error));
 });
 
 server.listen(port, () => {

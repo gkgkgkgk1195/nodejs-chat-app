@@ -14,15 +14,14 @@
                     <input type="text" name="username" placeholder="Display name" required>
                     <label for="room">Room</label>
                     <input type="text" name="room" placeholder="Room" required>
+                    <label for="room">Allow Notification</label>
+                    <input id="toggleNotification" type="checkbox">
+                    <h3 id="subscribed">You are subscribed</h3>
+                    <h3 id="unsubscribed">You are not subscribed</h3>
                     <button>Join</button>
                 </form>
             </div>
         </div>
-  <h3 id="subscribed">You are subscribed</h3>
-  <h3 id="unsubscribed">You are not subscribed</h3>
-  <button onclick="broadcast()">Send push notification</button>
-  <button onclick="subscribe()">Subscribe</div>
-  <button onclick="unsubscribe()">Unsubscribe</button>
         <script src="index.js"></script>
     </body>
 </html>
