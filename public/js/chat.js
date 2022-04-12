@@ -51,7 +51,7 @@ socket.on("message", message => {
     createdAt: moment(message.createdAt).format("h:mm a")
   });
 
-  if(message.username === username && message.room === room ){
+  if(message.username.toLowerCase() === username.toLowerCase() && message.room === room ){
     const html = Mustache.render(sentMessageTemplate, {
       username: message.username,
       message: message.text,
