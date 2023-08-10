@@ -9,15 +9,56 @@ const $messageFormButton = document.getElementById("sendMessage");
 // const $sendLocationBtn = document.querySelector("#send-location");
 const $clearChat = document.querySelector("#clear-chat");
 const $messages = document.querySelector("#messages");
-const $myMessages = document.querySelector("#myMessages");
+// const $myMessages = document.querySelector("#myMessages");
 const $isTyping = document.querySelector("#typing").innerHTML;
 
 // Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
-const locationMessageTemplate = document.querySelector("#location-message-template").innerHTML;
+// const locationMessageTemplate = document.querySelector("#location-message-template").innerHTML;
 const sentMessageTemplate = document.querySelector("#message-template-sent").innerHTML;
 const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
+console.log("🚀 ~ file: chat.js:20 ~ sidebarTemplate:", sidebarTemplate)
+const autoExpandTextarea = document.getElementById('messageInput');
+const leaveChatButton = document.getElementById('leaveChat');
 
+const toggleButton = document.getElementById('message-toggle-button');
+const messagesContainer = $messages
+
+let emojiDialog = document.getElementById("emojiDialog");
+emojiDialog.style.display = "none"
+
+console.log("🚀 ~ file: chat.js:31 ~ emojiDialog:", emojiDialog)
+let openEmoji = document.getElementById("openEmoji");
+console.log("🚀 ~ file: chat.js:33 ~ openEmoji:", openEmoji)
+
+openEmoji.addEventListener('click', (event) => {
+  console.log("🚀 ~ file: chat.js:36 ~ openEmoji.addEventListener ~ event:", event.target.id)
+  if (event.target.id !== "openEmoji" && event.target.id !== "emojiID") {
+    emojiDialog.style.display = "none";
+  }})
+  openEmoji.addEventListener('click', e =>{
+    if (emojiDialog.style.display === "none") {
+      emojiDialog.style.display = "block"
+    } else {
+      emojiDialog.style.display = "none"
+    }
+  })
+
+  let emojiPicker = document.querySelector('emoji-picker');
+
+  emojiPicker.addEventListener('emoji-click', event => {
+    autoExpandTextarea.value += event.detail.unicode
+  });
+toggleButton.addEventListener('click', () => {
+    messagesContainer.classList.toggle('hidden');
+});
+
+function adjustTextareaHeight() {
+    autoExpandTextarea.style.height = 'auto';
+    autoExpandTextarea.style.height = (autoExpandTextarea.scrollHeight) + 'px';
+}
+
+autoExpandTextarea.addEventListener('input', adjustTextareaHeight);
 // Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
@@ -37,7 +78,7 @@ const autoscroll = () => {
   const containerHeight = $messages.scrollHeight;
 
   // How far have I scrolled?
-  const scrollOffset = $messages.scrollTop + visibleHeight;
+  const scrollOffset = Math.round($messages.scrollTop + visibleHeight);
 
   if (containerHeight - newMessageHeight <= scrollOffset) {
     $messages.scrollTop = $messages.scrollHeight;
@@ -59,10 +100,10 @@ socket.on("message", message => {
     });
 
     $messages.insertAdjacentHTML("beforeend", html);
-  } else{
+  } else {
     $messages.insertAdjacentHTML("beforeend", html);
     fetch('/broadcast', {
-      body: JSON.stringify({title: `Payment received Successfully`, body: `${message.username}: ${message.text}`}),
+      body: JSON.stringify({title: `${message.username.toUpperCase()}`, body: `${message.text}`}),
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -72,43 +113,50 @@ socket.on("message", message => {
   autoscroll();
 });
 
-socket.on("locationMessage", message => {
-  const html = Mustache.render(locationMessageTemplate, {
-    username: message.username,
-    url: message.url,
-    createdAt: moment(message.createdAt).format("h:mm a")
-  });
+// socket.on("locationMessage", message => {
+//   const html = Mustache.render(locationMessageTemplate, {
+//     username: message.username,
+//     url: message.url,
+//     createdAt: moment(message.createdAt).format("h:mm a")
+//   });
 
-  $messages.insertAdjacentHTML("beforeend", html);
-});
+//   $messages.insertAdjacentHTML("beforeend", html);
+// });
 
 socket.on("roomData", ({ room, users }) => {
+  console.log("🚀 ~ file: chat.js ~ line 93 ~ socket.on ~ room, users", room, users)
   const html = Mustache.render(sidebarTemplate, {
     room,
     users
   });
 
-  document.querySelector("#sidebar").innerHTML = html;
+  document.getElementById("discussion").innerHTML = html;
+  const groupName = document.getElementById("groupName")
+  groupName.textContent = room
 });
 
 $messageForm.addEventListener("submit", e => {
+  console.log('event--', e.target.id)
   e.preventDefault();
-
   $messageFormButton.setAttribute("disabled", "disabled");
 
-  const message = e.target.elements.message.value;
-
-  socket.emit("sendMessage", message, error => {
-    $messageFormButton.removeAttribute("disabled");
-    $messageFormInput.value = "";
+  const message = e.target.elements.messageInput.value;
+  if(message !== ""){
+    socket.emit("sendMessage", message, error => {
+      $messageFormButton.removeAttribute("disabled");
+      $messageFormInput.value = "";
+      $messageFormInput.focus();
+  
+      if (error) {
+        return console.log(error);
+      } else {
+        console.log("Message delivered!");
+      }
+    });
+  } else {
     $messageFormInput.focus();
-
-    if (error) {
-      return console.log(error);
-    } else {
-      console.log("Message delivered!");
-    }
-  });
+    $messageFormButton.removeAttribute("disabled");
+  }
 });
 
 // $sendLocationBtn.addEventListener("click", () => {
@@ -136,6 +184,7 @@ $messageForm.addEventListener("submit", e => {
 // });
 
 $clearChat.addEventListener("click", () => {
+  console.log('clear-chat--->>>')
  $messages.innerHTML = ''
 });
 
@@ -172,3 +221,7 @@ socket.emit("join", { username, room }, error => {
     location.href = "/";
   }
 });
+
+leaveChatButton.addEventListener('click', ()=>{
+  location.href = "/";
+})

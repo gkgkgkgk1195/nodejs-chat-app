@@ -33,6 +33,28 @@ toggleNotification.addEventListener("change", () => {
 const getSubscribedElement = () => document.getElementById("subscribed");
 const getUnsubscribedElement = () => document.getElementById("unsubscribed");
 
+window.onload = async() =>{
+  const activeRooms = awaitfetch("/room/list", {
+    method: "GET",
+  }).then(function(d) {
+  console.log("🚀 ~ file: index.js ~ line 45 ~ window.onload=async ~ d", d)
+
+  })
+  console.log("🚀 ~ file: index.js ~ line 43 ~ window.onload=async ~ activeRooms", activeRooms)
+    var x = document.createElement("UL");
+    x.setAttribute("id", "myUL");
+    document.body.appendChild(x);
+
+    var a = ["Alpha","Beta","Gama"];
+    for(i=0 ; i<=2 ; i++)
+    {
+       var y = document.createElement("LI");
+       var t = document.createTextNode(a[i]);
+       y.appendChild(t);
+       document.getElementById("myUL").appendChild(y);
+    }
+}
+
 const setSubscribeMessage = async () => {
   const registration = await navigator.serviceWorker.ready;
   const subscription = await registration.pushManager.getSubscription();

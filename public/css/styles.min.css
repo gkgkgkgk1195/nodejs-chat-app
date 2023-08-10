@@ -45,6 +45,7 @@ button {
   color: white;
   font-size: 16px;
   transition: background 0.3s ease;
+  border-radius: 9px;
 }
 
 button:hover {
@@ -100,7 +101,7 @@ text-align: center;
   color: white;
   background: #333744;
   width: 225px;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 /* Chat styles */
@@ -127,6 +128,11 @@ text-align: center;
 
 .message {
   margin-bottom: 16px;
+  /* display: block; */
+  visibility: visible;
+}
+.hidden {
+  color: transparent
 }
 .message.right {
   text-align: right;
@@ -139,8 +145,9 @@ text-align: center;
 }
 
 .message__meta {
-  color: #777;
+  /* color: #777; */
   font-size: 14px;
+  visibility: visible;
 }
 
 .message a {
@@ -157,17 +164,20 @@ text-align: center;
 }
 
 .compose form {
-  display: flex;
+  display: inline;
   flex-grow: 1;
   margin-right: 16px;
+  margin-left: 10px;
 }
 
 .compose input {
   border: 1px solid #eeeeee;
-  width: 100%;
+  width: 80%;
   padding: 12px;
   margin: 0 16px 0 0;
   flex-grow: 1;
+
+  
 }
 
 .compose button {
@@ -188,12 +198,14 @@ text-align: center;
   font-size: 18px;
   margin-bottom: 4px;
   padding: 12px 24px 0 24px;
+  
 }
 
 .users {
   list-style-type: none;
   font-weight: 300;
   padding: 12px 24px 0 24px;
+  text-transform: uppercase;
 }
 .compose button {
   border-radius: 6px;
@@ -226,4 +238,56 @@ text-align: center;
 }
 .emoji_dialog {
   align-self: end;
+}
+
+#message-form {
+  display: inline-block;
+  height: 65px; /* Adjust as needed */
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 25px;
+  margin-left: 10px;
+}
+
+#messageInput {
+  /* ... (existing textarea styles) ... */
+  flex: 1; /* Expand to fill available space */
+  width: 100%; /* Optional: Adjust the width as needed */
+  border-radius: 9px;
+  padding-left: 6px;
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  align-self: self-end;
+}
+
+.sendMessage {
+  border-radius: 9px;
+}
+.openEmoji {
+  border-radius: 9px;
+}
+.clear-chat {
+  border-radius: 9px;
+}
+.leaveChat {
+  width: 50%;
+  background-color: rgb(169, 40, 71);
+}
+.toggle-div{
+  border-radius: 9px;
+  display: flex;
+  align-self: center;
+  background-color: red;
+  width: 100%;
+}
+.message-toggle-button{
+width: 50%;
+background-color: rgb(95, 95, 51)
 }

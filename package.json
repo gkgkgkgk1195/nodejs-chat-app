@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm install; node src/index.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js --ext js,css,html src/index.js",
+    "start:nodemon": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

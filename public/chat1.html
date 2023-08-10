@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+    <head>
+      <title>Let's Talk</title>
+      <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link rel="icon" href="/img/favicon.png">
+        <link rel="stylesheet" href="/css/styles.min.css">
+        <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.2/flatly/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />      </head>
+    <body>
+        <div class="chat">
+            <div id="sidebar" class="chat__sidebar"></div>
+            <div class="chat__main">
+              <div class="toggle-div">
+                <button id="message-toggle-button" class="message-toggle-button">Hide Me</button>
+                <button id="leaveChat" class="leaveChat">Leave Me</button>
+              </div>
+              
+                <div id="messages" class="chat__messages">
+                  <div id="myMessages" class="my_chat__messages"></div>
+                </div>
+                <div id="emojiDialog" class="emoji_dialog"><emoji-picker id="emojiID"></emoji-picker></div>
+                <p id="typing"></p>
+
+
+                <form id="message-form">
+                  <div class="input-container">
+                      <textarea id="messageInput" placeholder="Type here"></textarea>
+                      <div class="input-area">
+                          <button id="sendMessage" class="sendMessage">Send</button>
+                          <button id="openEmoji" class="openEmoji">😊</button>
+                          <button id="clear-chat" class="clear-chat">Clear</button>
+                      </div>
+                  </div>
+              </form>
+            </div>
+        </div>
+
+        <script id="message-template" type="text/html">
+            <div class="message">
+                <p>
+                    <span class="message__name">{{username}}</span>
+                    <span class="message__meta">{{createdAt}}</span>
+                </p>
+                <p>{{message}}</p>
+            </div>
+        </script>
+
+        <script id="message-template-sent" type="text/html">
+          <div class="message right">
+              <p>
+                  <span class="message__name">{{username}}</span>
+                  <span class="message__meta">{{createdAt}}</span>
+              </p>
+              <p>{{message}}</p>
+          </div>
+      </script>
+
+        <script id="location-message-template" type="text/html">
+            <div class="message">
+                <p>
+                    <span class="message__name">{{username}}</span>
+                    <span class="message__meta">{{createdAt}}</span>
+                </p>
+                <!-- <p><a href="{{url}}" target="_blank">My live location</a></p> -->
+            </div>
+        </script>
+
+        <script id="sidebar-template" type="text/html">
+            <h2 class="room-title">Test</h2>
+            <h2 class="room-title">Room: {{room}}</h2>
+            <h3 class="list-title">Online: {{users.length}}</h3>
+            <h3 class="list-title">Users</h3>
+            <ul class="users">
+                {{#users}}
+                    <li>{{username}}</li>
+                {{/users}}
+            </ul>
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.8.0/qs.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/chat.js"></script>
+        <script>
+          let emojiDialog = document.getElementById("emojiDialog");
+          let openEmoji = document.getElementById("openEmoji");
+          window.onclick = function(event) {
+            if (event.target.id !== "openEmoji" && event.target.id !== "emojiID") {
+              emojiDialog.style.display = "none";
+            }
+          }
+
+          emojiDialog.style.display = "none"
+
+          openEmoji.addEventListener('click', e =>{
+            if (emojiDialog.style.display === "none") {
+              emojiDialog.style.display = "block"
+            } else {
+              emojiDialog.style.display = "none"
+            }
+          })
+
+          let inputMessage = document.getElementById("messageInput");
+
+          let emojiPicker = document.querySelector('emoji-picker');
+
+          emojiPicker.addEventListener('emoji-click', event => {
+            inputMessage.value += event.detail.unicode
+          });
+        </script>
+        <script>
+        if ('Notification' in window) {
+          if (window.Notification.permission === 'granted') {
+            new window.Notification(`Welcome ${username}`, {
+                icon: '/img/icon.png',
+                body: 'Happy Chatting!!',
+            });
+          }
+        }</script>
+    </body>
+</html>

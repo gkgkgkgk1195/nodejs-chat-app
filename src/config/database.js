@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
 module.exports = async () => {
+  
   // Connect to the database
   try {
-    mongoose.connect('mongodb+srv://admin:gMbzfMgG0aS8Lzc7@letstalkhere.q1jrk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+    mongoose.connect(
+      'mongodb+srv://admin:Qz5scltFOPAZt2oH@letstalkhere.q1jrk.mongodb.net/?retryWrites=true&w=majority',
+      // 'mongodb://localhost:27017/web-push-notifications',
+      {
     // mongodb://localhost/web-push-notifications
       useNewUrlParser: true,
       useUnifiedTopology: true,

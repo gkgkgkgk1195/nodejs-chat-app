@@ -46,7 +46,9 @@ const broadcast = async (
     const {title, body} = req.body;
     const notification = { title, body };
 
+    console.log("🚀 ~ file: subscriptionController.js:49 ~ notification:", notification)
     const subscriptions = await subscriptionRepository.getAll();
+    console.log("🚀 ~ file: subscriptionController.js:50 ~ subscriptions:", subscriptions)
 
     const notifications = [];
     subscriptions.forEach((subscription) => {

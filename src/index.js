@@ -1,5 +1,6 @@
 const path = require("path");
 const http = require("http");
+const cors = require("cors")
 const express = require("express");
 const bodyParser = require('body-parser');
 const socketio = require("socket.io");
@@ -24,6 +25,7 @@ const publicDirectoryPath = path.join(__dirname, "../public");
 
 app.use(express.static(publicDirectoryPath));
 app.use(bodyParser.json());
+app.use(cors());
 const server = http.createServer(app);
 const io = socketio(server);
 
@@ -63,6 +65,7 @@ io.on("connection", socket => {
 
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
+    console.log("🚀 ~ file: index.js ~ line 66 ~ socket.on ~ user", user, message)
     const filter = new Filter();
 
     if (filter.isProfane(message)) {
