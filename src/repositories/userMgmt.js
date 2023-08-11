@@ -20,7 +20,6 @@ const createUser = async (user) => {
 const editUser = async (userId, body) => {
   try {
     const result = await User.updateOne({_id: mongoose.Types.ObjectId(userId)}, body);
-    console.log("🚀 ~ file: userMgmt.js ~ line 23 ~ editUser ~ result", result)
     if(result.modifiedCount > 0){
       return sucRes(200, "User data updated successfully", result)
     }else{
@@ -32,7 +31,6 @@ const editUser = async (userId, body) => {
 };
 
 const deleteUser = async (userId) => {
-console.log("🚀 ~ file: userMgmt.js ~ line 30 ~ deleteUser ~ userId", userId)
   try {
     const result = await User.deleteOne({_id: mongoose.Types.ObjectId(userId)});
     if(result && result.deletedCount > 0){
