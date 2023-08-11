@@ -96,10 +96,14 @@
   <script>
     if ('Notification' in window) {
       if (window.Notification.permission === 'granted') {
-        new window.Notification(`Welcome ${username}`, {
+        const noti = new window.Notification(`Welcome ${username}`, {
           icon: '/img/icon.png',
           body: 'Happy Chatting!!',
         });
+        noti.onclick = () => {
+          // Bring the tab to the foreground when notification is clicked
+          window.focus();
+        };
       }
     }
   </script>
