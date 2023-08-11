@@ -1,5 +1,5 @@
 body {
-    padding: 5%;
+    /* padding: 5%; */
     background-color: #F5F5F5;
 }
 
@@ -7,14 +7,16 @@ body {
     padding: 0;
     background-color: #FFF;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    height: 700px;
+     height: 100%;
+  /* max-width: 650px; */
+  /* margin: 0 auto; */
+    /* height: 700px; */
 }
 
 /* ===== MENU ===== */
 .menu {
     float: left;
-    height: 674px;
-    ;
+    height: 568px;
     width: 70px;
     background: #4768b5;
     background: -webkit-linear-gradient(#4768b5, #35488e);
@@ -55,7 +57,7 @@ body {
 
 .discussions {
     width: 25%;
-    height: 674px;
+    height: 568px;
     box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.20);
     overflow: hidden;
     background-color: #87a3ec;
@@ -183,7 +185,7 @@ body {
 }
 
 .chat {
-    width: calc(72% - 85px);
+    width: calc(80% - 85px);
 }
 
 .header-chat {
@@ -390,72 +392,11 @@ body {
 }
 
 .emoji_dialog {
-    align-self: end;
-    display: flex;
-    justify-content: left;
-    margin-left: 26px;
-    margin-top: 104px;
+    position: absolute;
+    top: 114px;
 }
 .hidden {
     color: transparent
   }
 
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
-  
-  .switch input { 
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
+ 

@@ -37,10 +37,8 @@ window.onload = async() =>{
   const activeRooms = awaitfetch("/room/list", {
     method: "GET",
   }).then(function(d) {
-  console.log("🚀 ~ file: index.js ~ line 45 ~ window.onload=async ~ d", d)
 
   })
-  console.log("🚀 ~ file: index.js ~ line 43 ~ window.onload=async ~ activeRooms", activeRooms)
     var x = document.createElement("UL");
     x.setAttribute("id", "myUL");
     document.body.appendChild(x);

@@ -3,8 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - Material Messaging App Concept</title>
-  <link rel="stylesheet" href="chat.css">
+  <meta name="viewport" content="width=device-width, initial-scale=10.0">
+  <title>Let's Chat</title>
+  <link rel="stylesheet" href="./css/chat.css">
   <link rel="icon" href="/img/favicon.png">
   <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
@@ -13,8 +14,6 @@
     href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
   <link rel="stylesheet" href="./style.css">
 </head>
-<!-- <body> -->
-<!-- partial:index.partial.html -->
 
 <body>
   <div class="container">
@@ -23,123 +22,87 @@
         <button id="message-toggle-button" class="message-toggle-button">Hide Me</button>
         <button id="leaveChat" class="leaveChat">Leave Me</button>
       </div>
-      <!-- navigator -->
-      <nav class="menu">
-        <ul class="items">
-          <li class="item">
-            <i class="fa fa-home" aria-hidden="true"></i>
-          </li>
-          <li class="item">
-            <i class="fa fa-user" aria-hidden="true"></i>
-          </li>
-          <li class="item">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-          </li>
-          <li class="item item-active">
-            <i class="fa fa-commenting" aria-hidden="true"></i>
-          </li>
-          <li class="item">
-            <i class="fa fa-file" aria-hidden="true"></i>
-          </li>
-          <li class="item">
-            <i class="fa fa-cog" aria-hidden="true"></i>
-          </li>
-        </ul>
-      </nav>
 
       <section class="discussions">
         <div id="sidebar" class="discussion search">
-          <!-- search bar -->
           <div class="searchbar">
             <i class="fa fa-search" aria-hidden="true"></i>
-            <input type="text" placeholder="Search..."></input>
+            <input type="text" placeholder="Search...">
           </div>
         </div>
-
-        <!-- <div id="sidebar" class="chat__sidebar"></div> -->
-
         <div id="discussion"></div>
         <script id="sidebar-template" type="text/html">
           {{#users}}
-          <div id="discussion" class="discussion">
-              <div class="photo" style="background-image: url(./img/user.png);">
-                <div class="online"></div>
-              </div>
-              <div class="desc-contact">
-                <p class="name">{{username}}</p>
-              </div>
-              </div>
+          <div class="discussion">
+            <div class="photo" style="background-image: url(./img/user.png);">
+              <div class="online"></div>
+            </div>
+            <div class="desc-contact">
+              <p class="name">{{username}}</p>
+            </div>
+          </div>
           {{/users}}
         </script>
       </section>
-      <!-- Chatting header -->
       <section class="chat">
         <div class="header-chat">
           <i class="icon fa fa-user-o" aria-hidden="true"></i>
           <p id="groupName" class="group-name"></p>
-          <label class="right switch notificationToggle">
-            <input type="checkbox" checked>
-            <span class="slider round"></span>
-          </label>
-          <!-- <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i> -->
         </div>
-
-
         <script id="message-template" type="text/html">
           <div class="message">
             <p class="name">{{username}}  {{createdAt}}:</p>
             <p class="text">{{message}}</p>
           </div>
-      </script>
-
+        </script>
         <script id="message-template-sent" type="text/html">
-        <div class="message text-only">
-          <div class="response">
-            <p class="name">{{username}}  {{createdAt}}:</p>
-            <p class="text">{{message}}</p>
-        </div>
-        </div>
-    </script>
-        <div id="emojiDialog" class="emoji_dialog"><emoji-picker id="emojiID"></emoji-picker></div>
+          <div class="message text-only">
+            <div class="response">
+              <p class="name">{{username}}  {{createdAt}}:</p>
+              <p class="text">{{message}}</p>
+            </div>
+          </div>
+        </script>
         <div id="messages" class="messages-chat"></div>
+        <div class="chat_inputs">
+
+          <div id="emojiDialog" class="emoji_dialog"><emoji-picker id="emojiID"></emoji-picker></div>
           <form id="message-form">
             <div class="footer-chat">
-              <button class="btn-send"><i id="openEmoji" class="fa fa-smile-o" style="font-size:25pt;"
-                  aria-hidden="true"></i></button>
+              <button type="button" id="openEmoji" class="btn-send"><i id="openEmoji" class="fa fa-smile-o"
+                  style="font-size:25pt;"></i></button>
               <p id="typing"></p>
-              <input type="text" id="messageInput" class="write-message" placeholder="Type your message here"></input>
-              <button class="btn-send"><i id="sendMessage" class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-              <button class="btn-send"><i id="clear-chat" class="fa fa-trash" aria-hidden="true"></i></button>
-              <!-- <button id="clear-chat" class="clear-chat">Clear</button> -->
+              <input type="text" id="messageInput" class="write-message" placeholder="Type your message here">
+              <button class="btn-send"><i id="sendMessage" class="fa fa-paper-plane-o"></i></button>
+              <button class="btn-send"><i id="clear-chat" class="fa fa-trash"></i></button>
             </div>
           </form>
+        </div>
       </section>
     </div>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.8.0/qs.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
+  <script>
+    window.onclick = function (event) {
+      if (event.target.id !== "openEmoji" && event.target.id !== "emojiID") {
+        emojiDialog.style.display = "none";
+      }
+    }
+  </script>
+  <script>
+    if ('Notification' in window) {
+      if (window.Notification.permission === 'granted') {
+        new window.Notification(`Welcome ${username}`, {
+          icon: '/img/icon.png',
+          body: 'Happy Chatting!!',
+        });
+      }
+    }
+  </script>
 </body>
-<!-- partial -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.8.0/qs.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/chat.js"></script>
-<script src="/js/index.js"></script>
-<script>
-  window.onclick = function (event) {
-    if (event.target.id !== "openEmoji" && event.target.id !== "emojiID") {
-      emojiDialog.style.display = "none";
-    }
-  }
-</script>
-<script>
-  if ('Notification' in window) {
-    if (window.Notification.permission === 'granted') {
-      new window.Notification(`Welcome ${username}`, {
-        icon: '/img/icon.png',
-        body: 'Happy Chatting!!',
-      });
-    }
-  }
-</script>
 
 </html>
