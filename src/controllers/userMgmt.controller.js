@@ -23,7 +23,6 @@ const editUser = async (
   try {
     const id = req.params.id
 
-    console.log("🚀 ~ file: userMgmt.controller.js ~ line 24 ~ id", id)
     if (!id === undefined) {
       res.sendStatus(400);
       return;

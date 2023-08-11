@@ -65,7 +65,6 @@ io.on("connection", socket => {
 
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
-    console.log("🚀 ~ file: index.js ~ line 66 ~ socket.on ~ user", user, message)
     const filter = new Filter();
 
     if (filter.isProfane(message)) {

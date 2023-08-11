@@ -19,7 +19,6 @@ const createRoom = async (body) => {
 const getRoom = async () => {
   try {
     const rooms = await Room.find({});
-    console.log("🚀 ~ file: roomMgmt.js ~ line 21 ~ getRoom ~ rooms", rooms)
     return sucRes(200, "Active room fetched successfully", rooms)
   } catch (error) {
     return error

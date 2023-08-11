@@ -5,9 +5,6 @@ window.onload = async() =>{
     return response.json();
   })
   .then(function(room) {
-
-    console.log(room.data);
-
     var x = document.createElement("UL");
     x.setAttribute("id", "myUL");
     document.body.appendChild(x);
